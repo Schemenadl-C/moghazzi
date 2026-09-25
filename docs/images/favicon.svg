@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="مغذی">
+  <rect width="32" height="32" rx="8" fill="#B85A3E"/>
+  <path fill="#F4EFE6" d="M16 10.4c3.2 0 8.2 3.1 8.2 8.1 0 4.3-3.5 7.5-8.2 7.5s-8.2-3.2-8.2-7.5c0-5 5-8.1 8.2-8.1z"/>
+  <path fill="#EDE6D9" d="M16 12.6c1.35 2.15 1.35 5.3 0 8.1-1.35-2.8-1.35-5.95 0-8.1z" opacity=".5"/>
+  <ellipse fill="#6B7A4F" cx="21" cy="9.1" rx="4.8" ry="2.35" transform="rotate(-30 21 9.1)"/>
+  <path d="M16 12C16.1 9.4 16.4 7.5 17.1 6.2" fill="none" stroke="#3A322C" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>مغذی — ۵۴ ماده غذایی</title>
+  <meta name="description" content="خانم‌ها سوءتغذیه ندارند، ولی آن‌طور که باید مواد مغذی مصرف نمی‌کنند. بیش از ۵۴ ماده در شش قفسه کاغذی." />
+  <meta property="og:title" content="مغذی" />
+  <link rel="icon" href="images/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f3ece1;
+      --cream: #faf6ef;
+      --ink: #3a322c;
+      --soft: #6a5e54;
+      --muted: #8a7c70;
+      --line: #d7ccbc;
+      --terracotta: #b85a3e;
+      --gold: #c4a574;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: Vazirmatn, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 16px 16px 64px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; }
+    .brand { font-weight: 700; font-size: 1.25rem; }
+    .ghost { border: 1px solid var(--line); background: var(--cream); border-radius: 999px; padding: 8px 16px; color: var(--soft); }
+    .hero { position: relative; border-radius: 22px; overflow: hidden; aspect-ratio: 5/4; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(58,50,44,.72), rgba(58,50,44,.12) 55%, transparent); }
+    .hero .copy { position: absolute; inset-inline: 0; bottom: 0; padding: 24px; color: var(--cream); }
+    .gold { color: var(--gold); margin: 0; }
+    .hero h1 { margin: 8px 0 0; font-size: clamp(1.5rem, 5vw, 2.4rem); line-height: 1.35; }
+    input[type="search"] {
+      width: 100%; margin: 16px 0 0; height: 48px; border-radius: 12px; border: 1px solid var(--line);
+      background: var(--cream); padding: 0 16px; font: inherit; color: var(--ink);
+    }
+    .grid { display: grid; gap: 20px; margin-top: 28px; }
+    @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .card { background: var(--cream); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: block; }
+    .card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+    .card .meta { padding: 16px 18px 18px; display: flex; justify-content: space-between; gap: 12px; }
+    .terracotta { color: var(--terracotta); margin: 4px 0 0; font-weight: 600; }
+    .muted { color: var(--muted); font-size: .85rem; }
+    .signal { color: var(--muted); font-size: .85rem; text-align: left; }
+    h2 { font-size: 2rem; margin: 8px 0 0; }
+    .why { color: var(--soft); line-height: 1.75; }
+    .board-wrap { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); margin-top: 18px; }
+    .board-wrap > img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+    .hotspots { position: absolute; inset: 7%; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 2%; direction: ltr; }
+    .hotspots button { background: transparent; border: 0; }
+    .names { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+    .names button { background: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 10px 4px; font: inherit; }
+    .results { background: var(--cream); border: 1px solid var(--line); border-radius: 12px; margin-top: 8px; overflow: hidden; }
+    .results a, .results button { display: block; width: 100%; text-align: right; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 14px; font: inherit; }
+    .sheet-bg { position: fixed; inset: 0; background: rgba(58,50,44,.4); display: none; align-items: flex-end; z-index: 20; }
+    .sheet-bg.open { display: flex; }
+    .sheet { background: var(--cream); width: 100%; border-radius: 24px 24px 0 0; padding: 24px 24px calc(24px + env(safe-area-inset-bottom)); max-width: 920px; margin: 0 auto; }
+    .serving { background: #e7dccb; border-radius: 12px; padding: 14px; margin-top: 14px; }
+    .close { width: 100%; margin-top: 14px; background: var(--ink); color: var(--cream); border: 0; border-radius: 12px; padding: 14px; font: inherit; font-weight: 600; }
+    .hint { text-align: center; color: var(--muted); margin-top: 16px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app"></div>
+  <div class="sheet-bg" id="sheet" onclick="if(event.target===this) closeSheet()">
+    <div class="sheet" id="sheetInner"></div>
+  </div>
+  <script src="foods.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function fa(n) { return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
+    function slug() { return location.hash.replace(/^#\/?/, ""); }
+
+    function home() {
+      const q = (window._q || "").trim();
+      const matches = q ? categories.flatMap(c => c.foods.filter(f =>
+        f.name.includes(q) || f.latin.toLowerCase().includes(q.toLowerCase()) ||
+        c.title.includes(q) || c.nutrient.includes(q)
+      ).map(f => ({...f, cat: c}))) : [];
+      return `
+        <header><span class="brand">مغذی</span><span class="muted">${fa(54)} ماده · ۶ قفسه</span></header>
+        <div class="hero">
+          <img src="images/hero.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="copy">
+            <p class="gold">بیش از ${fa(54)} ماده غذایی مغذی</p>
+            <h1>خانم‌ها سوءتغذیه ندارند، ولی آن‌طور که باید مواد مغذی مصرف نمی‌کنند</h1>
+          </div>
+        </div>
+        <input type="search" id="q" placeholder="جستجوی ماده، نشانه یا ماده مغذی…" value="${q.replace(/"/g,'"')}" />
+        ${q ? `<div class="results">${matches.length ? matches.map(f =>
+          `<a href="#/${f.cat.slug}" onclick="openFood('${f.cat.slug}','${f.id}')"><strong>${f.name}</strong><div class="muted">${f.cat.title} · ${f.cat.nutrient}</div></a>`
+        ).join("") : `<div style="padding:14px" class="muted">چیزی پیدا نشد.</div>`}</div>` : ""}
+        <h2 style="margin-top:28px">قفسه‌های کاغذی</h2>
+        <div class="grid">
+          ${categories.map(c => `
+            <a class="card" href="#/${c.slug}">
+              <img src="images/${c.image}.jpg" alt="${c.title}" />
+              <div class="meta">
+                <div><strong>${c.title}</strong><p class="terracotta">${c.nutrient}</p></div>
+                <div class="signal">${c.signal}</div>
+              </div>
+            </a>`).join("")}
+        </div>`;
+    }
+
+    function categoryView(c) {
+      return `
+        <header>
+          <a class="ghost" href="#">بازگشت</a>
+          <span class="brand">مغذی</span>
+        </header>
+        <p class="terracotta">${c.nutrient}</p>
+        <h2>${c.title}</h2>
+        <p class="muted">${c.signal}</p>
+        <p class="why">${c.why}</p>
+        <div class="board-wrap">
+          <img src="images/${c.image}.jpg" alt="${c.title}" />
+          <div class="hotspots">
+            ${c.foods.map(f => `<button type="button" onclick="openFood('${c.slug}','${f.id}')" aria-label="${f.name}"></button>`).join("")}
+          </div>
+        </div>
+        <div class="names">
+          ${c.foods.map(f => `<button type="button" onclick="openFood('${c.slug}','${f.id}')">${f.name}</button>`).join("")}
+        </div>
+        <p class="hint">روی هر خانه یا نام بزنید</p>`;
+    }
+
+    function render() {
+      const s = slug();
+      const c = categories.find(x => x.slug === s);
+      $("app").innerHTML = c ? categoryView(c) : home();
+      const input = $("q");
+      if (input) {
+        input.addEventListener("input", e => { window._q = e.target.value; render(); $("q")?.focus(); const el=$("q"); if(el) el.setSelectionRange(el.value.length, el.value.length); });
+      }
+    }
+
+    window.openFood = (catSlug, id) => {
+      const c = categories.find(x => x.slug === catSlug);
+      const f = c?.foods.find(x => x.id === id);
+      if (!f) return;
+      $("sheetInner").innerHTML = `
+        <p class="terracotta">${c.title} · ${c.nutrient}</p>
+        <h2>${f.name}</h2>
+        <p class="muted">${f.latin}</p>
+        <p class="why">${f.note}</p>
+        <div class="serving">پیمانه پیشنهادی: ${f.serving}</div>
+        <button class="close" type="button" onclick="closeSheet()">بستن</button>`;
+      $("sheet").classList.add("open");
+    };
+    window.closeSheet = () => $("sheet").classList.remove("open");
+    window.addEventListener("hashchange", render);
+    render();
+  </script>
+</body>
+</html>
